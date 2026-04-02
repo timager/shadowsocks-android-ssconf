@@ -61,6 +61,7 @@ object Key {
     const val plugin = "plugin"
     const val pluginConfigure = "plugin.configure"
     const val udpFallback = "udpFallback"
+    const val ssconfPrefix = "ssconfPrefix"
 
     const val dirty = "profileDirty"
 

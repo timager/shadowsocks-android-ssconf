@@ -99,6 +99,17 @@ class ProfileConfigFragment : PreferenceFragmentCompat(),
     private lateinit var receiver: BroadcastReceiver
     private lateinit var udpFallback: Preference
 
+    private fun formatPrefixForDisplay(prefix: String): String = buildString(prefix.length) {
+        prefix.forEach { ch ->
+            if (ch.code in 0x20..0x7e && ch != '\\') append(ch)
+            else if (ch == '\\') append("\\\\")
+            else {
+                append("\\u")
+                append(ch.code.toString(16).padStart(4, '0'))
+            }
+        }
+    }
+
     private fun makeDirt() {
         DataStore.dirty = true
         (activity as ProfileConfigActivity).unsavedChangesHandler.isEnabled = true
@@ -155,6 +166,11 @@ class ProfileConfigFragment : PreferenceFragmentCompat(),
         DataStore.privateStore.registerChangeListener(this)
 
         val profile = ProfileManager.getProfile(profileId) ?: Profile()
+        findPreference<Preference>(Key.ssconfPrefix)?.also { pref ->
+            val prefix = profile.ssconfPrefix
+            pref.isVisible = !prefix.isNullOrEmpty()
+            if (!prefix.isNullOrEmpty()) pref.summary = formatPrefixForDisplay(prefix)
+        }
         if (profile.subscription == Profile.SubscriptionStatus.Active) {
             findPreference<Preference>(Key.name)!!.isEnabled = false
             findPreference<Preference>(Key.host)!!.isEnabled = false

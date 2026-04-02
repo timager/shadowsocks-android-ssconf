@@ -32,7 +32,7 @@ import com.github.shadowsocks.utils.Key
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Profile::class, KeyValuePair::class], version = 30)
+@Database(entities = [Profile::class, KeyValuePair::class], version = 31)
 @TypeConverters(Profile.SubscriptionStatus::class)
 abstract class PrivateDatabase : RoomDatabase() {
     companion object {
@@ -43,7 +43,8 @@ abstract class PrivateDatabase : RoomDatabase() {
                         Migration27,
                         Migration28,
                         Migration29,
-                        Migration30
+                        Migration30,
+                        Migration31
                 )
                 allowMainThreadQueries()
                 enableMultiInstanceInvalidation()
@@ -82,5 +83,9 @@ abstract class PrivateDatabase : RoomDatabase() {
     object Migration30 : Migration(29, 30) {
         override fun migrate(database: SupportSQLiteDatabase) =
                 database.execSQL("ALTER TABLE `Profile` ADD COLUMN `subscriptionUrl` TEXT")
+    }
+    object Migration31 : Migration(30, 31) {
+        override fun migrate(database: SupportSQLiteDatabase) =
+                database.execSQL("ALTER TABLE `Profile` ADD COLUMN `ssconfPrefix` TEXT")
     }
 }

@@ -250,6 +250,7 @@ class SubscriptionService : Service(), CoroutineScope {
         target.remotePort = source.remotePort
         target.password = source.password
         target.method = source.method
+        target.ssconfPrefix = source.ssconfPrefix
         target.plugin = source.plugin
         target.udpFallback = source.udpFallback
         target.subscriptionUrl = sourceUrl

@@ -77,6 +77,7 @@ data class Profile(
         // managed fields
         var subscription: SubscriptionStatus = SubscriptionStatus.UserConfigured,
         var subscriptionUrl: String? = null,
+        var ssconfPrefix: String? = null,
         var tx: Long = 0,
         var rx: Long = 0,
         var userOrder: Long = 0,
@@ -187,6 +188,7 @@ data class Profile(
                         plugin = PluginOptions(id, json.optString("plugin_opts")).toString(false)
                     }
                     name = json.optString("remarks").ifEmpty { json.optString("tag") }
+                    ssconfPrefix = json.optString("prefix").ifEmpty { null }
                     route = json.optString("route", route)
                     if (fallback) return@apply
                     remoteDns = json.optString("remote_dns", remoteDns)
@@ -307,6 +309,7 @@ data class Profile(
         put("server_port", remotePort)
         put("password", password)
         put("method", method)
+        if (!ssconfPrefix.isNullOrEmpty()) put("prefix", ssconfPrefix)
         if (profiles == null) return@apply
         PluginConfiguration(plugin ?: "").getOptions().also {
             if (it.id.isNotEmpty()) {

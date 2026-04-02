@@ -33,6 +33,10 @@
                 app:entryValues="@array/enc_method_value"
                 app:title="@string/enc_method"
                 app:useSimpleSummaryProvider="true"/>
+        <Preference
+                app:key="ssconfPrefix"
+                app:icon="@drawable/ic_action_dns"
+                app:title="@string/ssconf_prefix"/>
 
     </PreferenceCategory>
 
